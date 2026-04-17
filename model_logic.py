@@ -1,15 +1,21 @@
-class ModelLogic:
-    from transformers import pipeline
+from transformers import pipeline
 
+class ModelLogic:
     try:
-        classifier = pipeline('sentiment-analysis', 'Xenova/distilbert-base-uncased-finetuned-sst-2-english')
+        classifier = pipeline('sentiment-analysis', 'distilbert-base-uncased-finetuned-sst-2-english')
     except Exception as e:
         print(f"Failed to initialize pipeline: {e}")
+        classifier = None
 
+    @staticmethod
     def get_prediction(text):
-        output = classifier(text)
-        
-        label = output['label']
-        confidence = output['score']
+        if ModelLogic.classifier is None:
+            return "Model not loaded."
 
-        print(f"The text sentiment is: {label} with the confidence score: {score}.")
+        output = ModelLogic.classifier(text)
+        res = output[0]
+        
+        label = res['label']
+        confidence = res['score']
+
+        return f"The text sentiment is: {label} with the confidence score: {confidence:.2f}."

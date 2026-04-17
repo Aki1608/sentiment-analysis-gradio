@@ -1,6 +1,7 @@
 import gradio as gr
-from model_logic import get_prediction
+from model_logic import ModelLogic
 
-demo = gr.Interface(fn=get_prediction, inputs="text", output="text")
+get_prediction = ModelLogic.get_prediction
+demo = gr.Interface(fn=get_prediction, inputs="text", outputs="text")
 
 demo.launch()
